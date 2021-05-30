@@ -65,6 +65,13 @@ async function getPage (url: string, opts: Opts) {
     })
   }
 
+  if (/[45]\d\d/.test(res.status) === true) {
+    throw new UnexpectedError({
+      ...UnexpectedError.BAD_HTTP_STATUS,
+      info: { httpStatus: res.status }
+    })
+  }
+
   // no charset in content type, peek at response body for at most 1024 bytes
   let str = buf.slice(0, 1024).toString()
   let rg
